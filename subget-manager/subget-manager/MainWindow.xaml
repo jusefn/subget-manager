@@ -5,8 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:subget_manager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition  MaxHeight="20"/>
+            <RowDefinition />
+            <RowDefinition MaxHeight="30" />
+        </Grid.RowDefinitions>
 
+        <Menu x:Name="menu" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Database">
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Close" />
+                    <MenuItem Header="_Save" />
+                </MenuItem>
+                <MenuItem Header="_Exit" Click="ExitItem_Click" />
+            </MenuItem>
+        </Menu>
+        
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="3">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="_Name" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn  Header="_Ausgaben" ></DataGridTextColumn>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+        
+        <Button x:Name="addButton" Grid.Column="0" Grid.Row="2" Margin="4" Content="+" />
+        <Button x:Name="removeButton" Grid.Column="1" Grid.Row="2" Margin="4" Content="-" />
+       
     </Grid>
 </Window>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,12 @@ namespace subget_manager
         public MainWindow()
         {
             InitializeComponent();
+          //  DbConnection dbConnection = new SqlConnection(@"Server=(local);Database=dummyDatabase;Trusted_Connection=Yes;");
+        }
+
+        private void ExitItem_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
