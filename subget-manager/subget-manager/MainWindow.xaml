@@ -29,14 +29,15 @@
             </MenuItem>
         </Menu>
         
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="3">
+        <DataGrid x:Name="dataGrid" Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="false" IsReadOnly="true">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="_Name" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn  Header="_Ausgaben" ></DataGridTextColumn>
+                <DataGridTextColumn Header="_Name" x:Name="nameGrid" Width="*" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn  Header="_Ausgaben" x:Name="expensesGrid" Binding="{Binding Ausgaben}" ></DataGridTextColumn>
             </DataGrid.Columns>
             
         </DataGrid>
         
+        <!--TODO: add functionality-->
         <Button x:Name="addButton" Grid.Column="0" Grid.Row="2" Margin="4" Content="+" />
         <Button x:Name="removeButton" Grid.Column="1" Grid.Row="2" Margin="4" Content="-" />
        
