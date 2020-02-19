@@ -1,0 +1,27 @@
+﻿<Window x:Class="subget_manager.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:subget_manager"
+        mc:Ignorable="d"
+        Title="Settings" Height="250" Width="300">
+
+        <StackPanel>
+            <Label Content="Connection String:"/>
+            <TextBox x:Name="conStrTxtBox" Text="Bla" Margin="4"/>
+
+            <Label Content="Culture:"/>
+            <TextBox x:Name="cultStrTxtBox" Text="Bla" Margin="4"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="saveButton" Content="Save" Click="saveButton_Click" Grid.Column="0" Margin="10" />
+            <Button x:Name="cancelButton" Content="Cancel" Click="cancelButton_Click" Grid.Column="1" Margin="10" />
+        </Grid>
+            
+    </StackPanel>
+            
+</Window>

@@ -21,25 +21,26 @@
         <Menu x:Name="menu" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
             <MenuItem Header="_File">
                 <MenuItem Header="_Database">
-                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Connect" Click="Connect_Click" />
                     <MenuItem Header="_Close" />
                     <MenuItem Header="_Save" />
                 </MenuItem>
+                <MenuItem Header="_Settings" Click="Settings_Click"/>
                 <MenuItem Header="_Exit" Click="ExitItem_Click" />
             </MenuItem>
         </Menu>
         
-        <DataGrid x:Name="dataGrid" Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="false" IsReadOnly="true">
+        <DataGrid x:Name="dataGrid" Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="false" IsReadOnly="true" CanUserResizeColumns="False" CanUserResizeRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="_Name" x:Name="nameGrid" Width="*" Binding="{Binding Name}"></DataGridTextColumn>
-                <DataGridTextColumn  Header="_Ausgaben" x:Name="expensesGrid" Binding="{Binding Ausgaben}" ></DataGridTextColumn>
+                <DataGridTextColumn  Header="_Ausgaben" x:Name="expensesGrid" Binding="{Binding Ausgaben, ConverterCulture={StaticResource ResourceKey=cultureSet},  StringFormat={}{0:C}}" ></DataGridTextColumn>
             </DataGrid.Columns>
             
         </DataGrid>
         
         <!--TODO: add functionality-->
-        <Button x:Name="addButton" Grid.Column="0" Grid.Row="2" Margin="4" Content="+" />
-        <Button x:Name="removeButton" Grid.Column="1" Grid.Row="2" Margin="4" Content="-" />
+        <Button x:Name="addButton" Click="addButton_Click" Grid.Column="0" Grid.Row="2" Margin="4" Content="+" />
+        <Button x:Name="removeButton" Click="removeButton_Click" Grid.Column="1" Grid.Row="2" Margin="4" Content="-" />
        
     </Grid>
 </Window>

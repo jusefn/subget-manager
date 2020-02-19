@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,19 +31,23 @@ namespace subget_manager
 
         private SqlConnection dbConnection;
         private string connectionString;
+        public CultureInfo culture;
         public MainWindow()
         {
+            SetCulture();
             InitializeComponent();
-            
-            //Retrive ConnectionString from App.config.
-            connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
-            //Establish a new SQL Server connection.
-            dbConnection = new SqlConnection(connectionString);
-            //Open the connection
-            dbConnection.Open();
-            //Initialize the DataGrid.
-            InitializeDataGrid();
 
+        }
+
+        /// <summary>
+        /// Sets the culture that is configured in the App.config file.
+        /// </summary>
+        private void SetCulture()
+        {
+            culture = new CultureInfo(ConfigurationManager.AppSettings["CultureString"]);
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            this.Resources.Add("cultureSet", culture);
         }
 
         /// <summary>
@@ -77,6 +82,44 @@ namespace subget_manager
             dataAdapter.Fill(dt);
             // Set the ItemsSource of the DataGrid to the DataTable.
             dataGrid.ItemsSource = dt.DefaultView;
+        }
+
+        /// <summary>
+        /// Connects to the Database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Connect_Click(object sender, RoutedEventArgs e)
+        {
+            //Retrive ConnectionString from App.config.
+            connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
+            //Establish a new SQL Server connection.
+            dbConnection = new SqlConnection(connectionString);
+            //Open the connection
+            await dbConnection.OpenAsync();
+            //Initialize the DataGrid.
+            InitializeDataGrid();
+        }
+
+        /// <summary>
+        /// Opens Settings window as a dialoge.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            Settings settingsWindow = new Settings();
+            settingsWindow.ShowDialog();
+        }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void removeButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
