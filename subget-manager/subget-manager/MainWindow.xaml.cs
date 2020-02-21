@@ -25,7 +25,7 @@ namespace subget_manager
     /// </summary>
     public partial class MainWindow : Window
     {
-        //TODO: Set monthly budget in App.conf.
+        //TODO: Set monthly budget
         //TODO: Give add and remove functionionality.
         //TODO: Allow to create a new table within the application.
 
@@ -78,7 +78,7 @@ namespace subget_manager
         {
             
 
-            Connect connectWindow = new Connect();
+            ConnectScreen connectWindow = new ConnectScreen();
             connectWindow.ShowDialog();
 
         }
@@ -103,5 +103,6 @@ namespace subget_manager
         {
             throw new NotImplementedException();
         }
+
     }
 }

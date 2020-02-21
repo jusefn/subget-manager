@@ -19,7 +19,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button x:Name="saveButton" Content="Save" Click="saveButton_Click" Grid.Column="0" Margin="10" />
-            <Button x:Name="cancelButton" Content="Cancel" Click="cancelButton_Click" Grid.Column="1" Margin="10" />
+            <Button x:Name="cancelButton" Content="Close" Click="cancelButton_Click" Grid.Column="1" Margin="10" />
         </Grid>
             
     </StackPanel>

@@ -38,8 +38,17 @@ namespace subget_manager
         /// <param name="e"></param>
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var connectionStringsSection = (ConnectionStringsSection)config.GetSection("connectionStrings");
+            var appSection = (AppSettingsSection)config.GetSection("appSettings");
 
-            throw new NotImplementedException();
+            connectionStringsSection.ConnectionStrings["connectionString"].ConnectionString = conStrTxtBox.Text;
+            appSection.Settings["CultureString"].Value = cultStrTxtBox.Text;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+            ConfigurationManager.RefreshSection("connectionStrings");
+
+            MessageBox.Show("Saved");
         }
 
         /// <summary>

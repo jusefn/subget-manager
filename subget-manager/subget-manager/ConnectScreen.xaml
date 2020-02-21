@@ -1,4 +1,4 @@
-﻿<Window x:Class="subget_manager.Connect"
+﻿<Window x:Class="subget_manager.ConnectScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,8 +8,14 @@
         Title="Connect" Height="400" Width="600">
 
     <StackPanel>
+        <CheckBox Content="Connect with preset connection string (can be changed in the settings)" x:Name="conStrBox" IsChecked="False" Checked="conStrBox_Checked" Unchecked="conStrBox_Unchecked" Margin="4,4,0,0"></CheckBox>
         <Label Content="Server:"/>
         <TextBox x:Name="srvTxtBox" Text="Bla" Margin="4"/>
+
+        <Label Content="Create new database or connect to existing database:"/>
+        <RadioButton GroupName="database" Content="New Database" x:Name="newRadio" Margin="4"></RadioButton>
+        <RadioButton GroupName="database" Content="Existing Database" x:Name="existRadio" Margin="4"></RadioButton>
+
 
         <Label Content="Database:"/>
         <TextBox x:Name="dbTxtBox" Text="Bla" Margin="4"/>
