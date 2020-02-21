@@ -29,13 +29,15 @@ namespace subget_manager
         //TODO: Give add and remove functionionality.
         //TODO: Allow to create a new table within the application.
 
-        private SqlConnection dbConnection;
-        private string connectionString;
+        //private SqlConnection dbConnection;
+        //private string connectionString;
         public CultureInfo culture;
+        public static DataGrid DataGrid { get; set; }
         public MainWindow()
         {
             SetCulture();
             InitializeComponent();
+            DataGrid = dataGrid;
 
         }
 
@@ -58,31 +60,14 @@ namespace subget_manager
         private void ExitItem_Click(object sender, RoutedEventArgs e)
         {
             // The Connection will be closed and disposed.
-            dbConnection.Close();
-            dbConnection.Dispose();
+            //dbConnection.Close();
+            //dbConnection.Dispose();
             // Close the application.
             Application.Current.Shutdown();
             
             
         }
 
-        /// <summary>
-        /// Initialize the DataGrid by retrieving the tables from the Database and set it as the ItemSource to be bindable.
-        /// </summary>
-        private void InitializeDataGrid()
-        {
-            // The SQL command to be launched.
-            string commandString = "SELECT [Name], [Ausgaben] FROM [subget].[dbo].[SubGet]";
-            SqlCommand command = new SqlCommand(commandString, dbConnection);
-            // Set the DataAdapter from the SQL command.
-            DbDataAdapter dataAdapter = new SqlDataAdapter(command);
-            // Create the DataTable.
-            DataTable dt = new DataTable();
-            // Fill the DataTable with the DataAdapter.
-            dataAdapter.Fill(dt);
-            // Set the ItemsSource of the DataGrid to the DataTable.
-            dataGrid.ItemsSource = dt.DefaultView;
-        }
 
         /// <summary>
         /// Connects to the Database.
@@ -91,14 +76,11 @@ namespace subget_manager
         /// <param name="e"></param>
         private async void Connect_Click(object sender, RoutedEventArgs e)
         {
-            //Retrive ConnectionString from App.config.
-            connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
-            //Establish a new SQL Server connection.
-            dbConnection = new SqlConnection(connectionString);
-            //Open the connection
-            await dbConnection.OpenAsync();
-            //Initialize the DataGrid.
-            InitializeDataGrid();
+            
+
+            Connect connectWindow = new Connect();
+            connectWindow.ShowDialog();
+
         }
 
         /// <summary>
