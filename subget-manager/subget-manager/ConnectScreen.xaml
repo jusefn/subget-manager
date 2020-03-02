@@ -10,7 +10,7 @@
     <StackPanel>
         <CheckBox Content="Connect with preset connection string (can be changed in the settings)" x:Name="conStrBox" IsChecked="False" Checked="conStrBox_Checked" Unchecked="conStrBox_Unchecked" Margin="4,4,0,0"></CheckBox>
         <Label Content="Server:"/>
-        <TextBox x:Name="srvTxtBox" Text="Bla" Margin="4"/>
+        <TextBox x:Name="srvTxtBox" Text="" Margin="4"/>
 
         <Label Content="Create new database or connect to existing database:"/>
         <RadioButton GroupName="database" Content="New Database" x:Name="newRadio" Margin="4"></RadioButton>
@@ -18,7 +18,7 @@
 
 
         <Label Content="Database:"/>
-        <TextBox x:Name="dbTxtBox" Text="Bla" Margin="4"/>
+        <TextBox x:Name="dbTxtBox" Text="" Margin="4"/>
 
         <Label Content="Trusted Connection:"/>
         <ComboBox x:Name="trustedComboBox" Width="100" Height="Auto" Margin="4" HorizontalAlignment="Left"/>

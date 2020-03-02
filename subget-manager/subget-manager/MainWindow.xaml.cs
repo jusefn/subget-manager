@@ -94,11 +94,7 @@ namespace subget_manager
             settingsWindow.ShowDialog();
         }
 
-        private void addButton_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
+        private void addButton_Click(object sender, RoutedEventArgs e) => dbConnect.Add();
         private void removeButton_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();

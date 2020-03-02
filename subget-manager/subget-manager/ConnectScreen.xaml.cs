@@ -36,49 +36,54 @@ namespace subget_manager
 
         private void connectButton_Click(object sender, RoutedEventArgs e)
         {
-            dbConnect dataConnection = new dbConnect();
+            //dbConnect dataConnection = new dbConnect();
             //   dataConnection.ConnectionString = "Server=" + srvTxtBox.Text + ";" + "Database=" + dbTxtBox.Text + ";" + "Trusted_Connection=" + trustedComboBox.SelectedItem + ";";
 
             if (conStrBox.IsChecked == false)
             {
                 if (!String.IsNullOrWhiteSpace(srvTxtBox.Text))
                 {
-                    dataConnection.ConnectionString.Append(String.Format("Server={0};", srvTxtBox.Text));
+                    dbConnect.ConnectionString.Append(String.Format("Server={0};", srvTxtBox.Text));
                 }
                 else
                 {
-                    MessageBox.Show("No server entered.");
+                    MessageBox.Show("No server entered.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
                 if (!String.IsNullOrWhiteSpace(dbTxtBox.Text))
                 {
-                    dataConnection.ConnectionString.Append(String.Format("Database={0};", dbTxtBox.Text));
+                    dbConnect.ConnectionString.Append(String.Format("Database={0};", dbTxtBox.Text));
                 }
                 else if(String.IsNullOrWhiteSpace(dbTxtBox.Text))
                 {
-                    MessageBox.Show("No database entered.");
+                    MessageBox.Show("No database entered.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
                 if (trustedComboBox.SelectedItem != null)
                 {
-                    dataConnection.ConnectionString.Append(String.Format("Trusted_Connection={0};", trustedComboBox.SelectedItem));
+                    dbConnect.ConnectionString.Append(String.Format("Trusted_Connection={0};", trustedComboBox.SelectedItem));
                 }
                 else
                 {
-                    MessageBox.Show("No connection security selected.");
+                    MessageBox.Show("No connection security selected.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-            } else
+
+               
+
+            } else if(conStrBox.IsChecked == true)
             {
-                dataConnection.ConnectionString.Append(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+                dbConnect.ConnectionString.Append(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+
             }
-            
-            if(existRadio.IsChecked == true)
-                dataConnection.Connect(exist: true, null);
+
+            if (existRadio.IsChecked == true || newRadio.IsChecked == false)
+                dbConnect.Connect(exist: true, null);
             if (newRadio.IsChecked == true)
-                dataConnection.Connect(exist: false, dbTxtBox.Text);
+                dbConnect.Connect(exist: false, dbTxtBox.Text);
+            
 
             this.Close();
         }
@@ -86,9 +91,12 @@ namespace subget_manager
         private void conStrBox_Checked(object sender, RoutedEventArgs e)
         {
 
-                srvTxtBox.IsReadOnly = true;
-                dbTxtBox.IsReadOnly = true;
-                trustedComboBox.IsReadOnly = true;
+                srvTxtBox.IsEnabled = false;
+                srvTxtBox.IsEnabled = false;
+                dbTxtBox.IsEnabled = false;
+                newRadio.IsEnabled = false;
+                existRadio.IsEnabled = false;
+                trustedComboBox.IsEnabled = false;
 
 
         }
@@ -96,9 +104,12 @@ namespace subget_manager
         private void conStrBox_Unchecked(object sender, RoutedEventArgs e)
         {
 
-            srvTxtBox.IsReadOnly = false;
-            dbTxtBox.IsReadOnly = false;
-            trustedComboBox.IsReadOnly = false;
+            srvTxtBox.IsEnabled = true;
+            srvTxtBox.IsEnabled = true;
+            dbTxtBox.IsEnabled = true;
+            newRadio.IsEnabled = true;
+            existRadio.IsEnabled = true;
+            trustedComboBox.IsEnabled = true;
         }
     }
 }
