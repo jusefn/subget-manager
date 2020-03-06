@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:subget_manager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="SubGet Manager" Height="600" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40" />
@@ -15,11 +15,12 @@
         <Grid.RowDefinitions>
             <RowDefinition  MaxHeight="20"/>
             <RowDefinition />
+            <RowDefinition MaxHeight="60" />
             <RowDefinition MaxHeight="30" />
         </Grid.RowDefinitions>
 
         <Menu x:Name="menu" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
-            <MenuItem Header="_File">
+            <MenuItem Header="_File" Click="MenuItem_Click">
                 <MenuItem Header="_Database">
                     <MenuItem Header="_Connect" Click="Connect_Click" />
                     <MenuItem Header="_Close" />
@@ -37,10 +38,25 @@
             </DataGrid.Columns>
             
         </DataGrid>
+        <WrapPanel Grid.Row="2" Grid.ColumnSpan="3">
+            <StackPanel>
+                <Label>Budget:</Label>
+                <Label x:Name="budgetLabel"></Label>
+            </StackPanel>
+            <StackPanel>
+                <Label Grid.Row="3" Grid.ColumnSpan="3">Monthly Expenses:</Label>
+                <Label x:Name="expenseLabel"></Label>
+            </StackPanel>
+            <StackPanel>
+                <Label Grid.Row="4" Grid.ColumnSpan="3">Remaining Budget:</Label>
+                <Label x:Name="restLabel" ></Label>
+            </StackPanel>
+        </WrapPanel>
+        
         
         <!--TODO: add functionality-->
-        <Button x:Name="addButton" Click="addButton_Click" Grid.Column="0" Grid.Row="2" Margin="4" Content="+" />
-        <Button x:Name="removeButton" Click="removeButton_Click" Grid.Column="1" Grid.Row="2" Margin="4" Content="-" />
+        <Button x:Name="addButton" Click="addButton_Click" Grid.Column="0" Grid.Row="5" Margin="4" Content="+" />
+        <Button x:Name="removeButton" Click="removeButton_Click" Grid.Column="1" Grid.Row="5" Margin="4" Content="-" />
        
     </Grid>
 </Window>

@@ -1,0 +1,26 @@
+﻿<Window x:Class="subget_manager.Add"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:subget_manager"
+        mc:Ignorable="d"
+        Title="Add" Height="195" Width="410">
+
+    <StackPanel>
+        <Label Content="Name:"/>
+        <TextBox x:Name="nameTxtBox" Margin="4"/>
+
+        <Label Content="Amount: (Use the period character for decimals)"/>
+        <TextBox x:Name="amountTxtBox" Margin="4"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="addButton" Content="Add" Click="addButton_Click" Grid.Column="0" Margin="10" />
+            <Button x:Name="cancelButton" Content="Close" Click="cancelButton_Click" Grid.Column="1" Margin="10" />
+        </Grid>
+
+    </StackPanel>
+</Window>

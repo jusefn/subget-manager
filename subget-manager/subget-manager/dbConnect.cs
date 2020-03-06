@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
 using System.Windows;
 
-
+//TODO: Change "Ausgaben" to "Expenses"
 
 namespace subget_manager
 {
@@ -60,17 +61,30 @@ namespace subget_manager
         /// </summary>
         static void InitializeDataGrid(SqlConnection dbConnection)
         {
+            MainWindow.DataGrid.Items.Clear();
+            MainWindow.DataGrid.Items.Refresh();
             // The SQL command to be launched.
-            string commandString = String.Format("SELECT [Name], [Ausgaben] FROM [{0}].[dbo].[SubGet]", dbConnection.Database);
-            SqlCommand command = new SqlCommand(commandString, dbConnection);
-            // Set the DataAdapter from the SQL command.
-            DbDataAdapter dataAdapter = new SqlDataAdapter(command);
-            // Create the DataTable.
-            DataTable dt = new DataTable();
-            // Fill the DataTable with the DataAdapter.
-            dataAdapter.Fill(dt);
-            // Set the ItemsSource of the DataGrid to the DataTable.
-            MainWindow.DataGrid.ItemsSource = dt.DefaultView;
+            string commandString = String.Format("SELECT [Name], [Ausgaben] FROM [{0}].[dbo].[SubGet] WHERE [Id] >= 1", dbConnection.Database);
+            using (SqlCommand command = new SqlCommand(commandString, dbConnection))
+            {
+                // Set the DataAdapter from the SQL command.
+                DbDataAdapter dataAdapter = new SqlDataAdapter(command);
+                // Create the DataTable.
+                DataTable dt = new DataTable();
+                // Fill the DataTable with the DataAdapter.
+                dataAdapter.Fill(dt);
+                // Set the ItemsSource of the DataGrid to the DataTable.
+                MainWindow.DataGrid.ItemsSource = dt.DefaultView;
+            }
+
+            Object temp = null;
+
+            string budgetComString = String.Format("SELECT [Ausgaben] FROM [{0}].[dbo].[SubGet] WHERE [Id] = 0", dbConnection.Database);
+            using (SqlCommand command = new SqlCommand(budgetComString, dbConnection))
+            {
+                temp = command.ExecuteScalar();
+            }
+            MainWindow.BudgetLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", Convert.ToSingle(temp?.ToString()));
         }
 
         public static async void CreateDB(string newDbName)
@@ -89,7 +103,7 @@ namespace subget_manager
                     
                     string tableCreate = String.Format(@"CREATE TABLE [{0}].[dbo].[SubGet]
                                                 (
-                                                    [Id] INT NOT NULL PRIMARY KEY, 
+                                                    [Id] INT NOT NULL IDENTITY(0,1) PRIMARY KEY, 
                                                     [Name] NCHAR(10) NOT NULL,
                                                     [Ausgaben] SMALLMONEY NOT NULL
                                                  )", newDbName);
@@ -130,13 +144,28 @@ namespace subget_manager
         }
 
 
-        public static async void Add()
+        public static async void Add(string name, float amount)
         {
-            if (dbConnection != null && dbConnection.State == ConnectionState.Closed)
+            if (dbConnection != null && dbConnection.State != ConnectionState.Closed)
             {
-                // do something
-                // ...
+                string commandString = String.Format(@"INSERT INTO [{0}].[dbo].[Subget] (Name, Ausgaben) VALUES('{1}', {2})", dbConnection.Database, name, amount);
+                using (SqlCommand command = new SqlCommand(commandString, dbConnection))
+                {
+                    await command.ExecuteNonQueryAsync();
+                }
+                InitializeDataGrid(dbConnection);
+
+            } else
+            {
+                MessageBox.Show("A connection hasn't been established, connect to a database first and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
+        }
+
+        public static void Close()
+        {
+            MainWindow.DataGrid.Items.Clear();
+            MainWindow.DataGrid.Items.Refresh();
         }
     }
 }

@@ -33,11 +33,13 @@ namespace subget_manager
         //private string connectionString;
         public CultureInfo culture;
         public static DataGrid DataGrid { get; set; }
+        public static Label BudgetLabel { get; set; }
         public MainWindow()
         {
             SetCulture();
             InitializeComponent();
             DataGrid = dataGrid;
+            BudgetLabel = budgetLabel;
 
         }
 
@@ -94,11 +96,16 @@ namespace subget_manager
             settingsWindow.ShowDialog();
         }
 
-        private void addButton_Click(object sender, RoutedEventArgs e) => dbConnect.Add();
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+            Add addWindow = new Add();
+            addWindow.ShowDialog();
+        }
         private void removeButton_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
         }
+
 
     }
 }
