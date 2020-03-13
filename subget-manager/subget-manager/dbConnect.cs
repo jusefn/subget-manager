@@ -37,9 +37,12 @@ namespace subget_manager
                 //Initialize the DataGrid.
                 if (exist && newDbName == null)
                 {
-                    dbConnection = new SqlConnection(ConnectionString.ToString());
-                    await dbConnection.OpenAsync();
-                    InitializeDataGrid(dbConnection);
+                    using (dbConnection = new SqlConnection(ConnectionString.ToString()))
+                    {
+                        await dbConnection.OpenAsync();
+                        InitializeDataGrid(dbConnection);
+                    }
+                        
                 }   
                 else if (!exist)
                 {

@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <Menu x:Name="menu" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
-            <MenuItem Header="_File" Click="MenuItem_Click">
+            <MenuItem Header="_File">
                 <MenuItem Header="_Database">
                     <MenuItem Header="_Connect" Click="Connect_Click" />
                     <MenuItem Header="_Close" />
