@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows;
 
 //TODO: Change "Ausgaben" to "Expenses"
+//TODO: Budget set dialogue
+
 
 namespace subget_manager
 {
@@ -37,12 +39,20 @@ namespace subget_manager
                 //Initialize the DataGrid.
                 if (exist && newDbName == null)
                 {
+                    /*
                     using (dbConnection = new SqlConnection(ConnectionString.ToString()))
                     {
                         await dbConnection.OpenAsync();
                         InitializeDataGrid(dbConnection);
-                    }
-                        
+                    }*/
+
+                    dbConnection = new SqlConnection(ConnectionString.ToString());
+                    await dbConnection.OpenAsync();
+                    InitializeDataGrid(dbConnection);
+                    
+
+
+
                 }   
                 else if (!exist)
                 {
@@ -64,10 +74,11 @@ namespace subget_manager
         /// </summary>
         static void InitializeDataGrid(SqlConnection dbConnection)
         {
-            MainWindow.DataGrid.Items.Clear();
+            MainWindow.DataGrid.ItemsSource = null;
             MainWindow.DataGrid.Items.Refresh();
             // The SQL command to be launched.
             string commandString = String.Format("SELECT [Name], [Ausgaben] FROM [{0}].[dbo].[SubGet] WHERE [Id] >= 1", dbConnection.Database);
+
             using (SqlCommand command = new SqlCommand(commandString, dbConnection))
             {
                 // Set the DataAdapter from the SQL command.
@@ -80,14 +91,46 @@ namespace subget_manager
                 MainWindow.DataGrid.ItemsSource = dt.DefaultView;
             }
 
-            Object temp = null;
+          
+            //Object temp = null;
 
             string budgetComString = String.Format("SELECT [Ausgaben] FROM [{0}].[dbo].[SubGet] WHERE [Id] = 0", dbConnection.Database);
+            string expenseLabelString = String.Format("SELECT SUM([Ausgaben]) FROM [{0}].[dbo].[SubGet] WHERE [Id] > 0", dbConnection.Database);
+            float  restBudget = 0f;
+
             using (SqlCommand command = new SqlCommand(budgetComString, dbConnection))
             {
-                temp = command.ExecuteScalar();
+                Object temp = command.ExecuteScalar();
+                MainWindow.BudgetLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", Convert.ToSingle(temp?.ToString()));
+                restBudget = Convert.ToSingle(temp?.ToString());
             }
-            MainWindow.BudgetLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", Convert.ToSingle(temp?.ToString()));
+
+            using (SqlCommand command = new SqlCommand(expenseLabelString, dbConnection))
+            {
+                Object temp = command.ExecuteScalar();
+                if (temp.ToString() == "")
+                    MainWindow.ExpenseLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", 0f);
+                else
+                {
+                    MainWindow.ExpenseLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", Convert.ToSingle(temp?.ToString()));
+                    restBudget -= Convert.ToSingle(temp?.ToString());
+                }
+
+            }
+
+
+
+            MainWindow.RestLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", restBudget);
+        }
+
+        public static async void Remove(string selectedItem)
+        {
+            string removeCommand = String.Format("DELETE FROM [{0}].[dbo].[SubGet] WHERE [Name]='{1}'", dbConnection.Database, selectedItem);
+            using(SqlCommand command = new SqlCommand(removeCommand, dbConnection))
+            {
+                await command.ExecuteNonQueryAsync();
+            }
+            InitializeDataGrid(dbConnection);
         }
 
         public static async void CreateDB(string newDbName)
@@ -165,10 +208,16 @@ namespace subget_manager
             }
         }
 
+
+
         public static void Close()
         {
+            MainWindow.DataGrid.ItemsSource = null;
             MainWindow.DataGrid.Items.Clear();
             MainWindow.DataGrid.Items.Refresh();
+            MainWindow.BudgetLabel.Content = null;
+
+
         }
     }
 }

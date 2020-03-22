@@ -29,6 +29,7 @@ namespace subget_manager
             {
                 //TODO: Comma and Period
                 dbConnect.Add(nameTxtBox.Text, Convert.ToSingle(amountTxtBox.Text));
+                this.Close();
             }
             catch (FormatException)
             {

@@ -34,13 +34,16 @@ namespace subget_manager
         public CultureInfo culture;
         public static DataGrid DataGrid { get; set; }
         public static Label BudgetLabel { get; set; }
+        public static Label ExpenseLabel { get; set; }
+        public static Label RestLabel { get; set; }
         public MainWindow()
         {
             SetCulture();
             InitializeComponent();
             DataGrid = dataGrid;
             BudgetLabel = budgetLabel;
-
+            ExpenseLabel = expenseLabel;
+            RestLabel = restLabel;
         }
 
         /// <summary>
@@ -103,7 +106,16 @@ namespace subget_manager
         }
         private void removeButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var selectedItem = ((DataRowView)dataGrid.SelectedItem).Row.ItemArray[0].ToString();
+
+            dbConnect.Remove(selectedItem);
+
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            dbConnect.Close();
         }
 
 
