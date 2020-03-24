@@ -24,7 +24,7 @@
                 <MenuItem Header="_Database">
                     <MenuItem Header="_Connect" Click="Connect_Click" />
                     <MenuItem Header="_Close" Click="Close_Click" />
-                    <MenuItem Header="_Save" />
+                    <MenuItem Header="_Set Budget" Click="SetBudget_Click" />
                 </MenuItem>
                 <MenuItem Header="_Settings" Click="Settings_Click"/>
                 <MenuItem Header="_Exit" Click="ExitItem_Click" />

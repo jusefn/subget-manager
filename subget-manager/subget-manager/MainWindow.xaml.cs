@@ -28,6 +28,7 @@ namespace subget_manager
         //TODO: Set monthly budget
         //TODO: Give add and remove functionionality.
         //TODO: Allow to create a new table within the application.
+        //TODO: Allow to change value of an entry.
 
         //private SqlConnection dbConnection;
         //private string connectionString;
@@ -79,7 +80,7 @@ namespace subget_manager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void Connect_Click(object sender, RoutedEventArgs e)
+        private void Connect_Click(object sender, RoutedEventArgs e)
         {
             
 
@@ -99,11 +100,22 @@ namespace subget_manager
             settingsWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// Opens window for adding a new entry to the database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             Add addWindow = new Add();
             addWindow.ShowDialog();
         }
+
+        /// <summary>
+        /// Removes entry from a database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void removeButton_Click(object sender, RoutedEventArgs e)
         {
             //throw new NotImplementedException();
@@ -113,11 +125,24 @@ namespace subget_manager
 
         }
 
+        /// <summary>
+        /// Closes the connection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             dbConnect.Close();
         }
 
-
+        /// <summary>
+        /// Opens window for setting the budget on an existing database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetBudget_Click(object sender, RoutedEventArgs e)
+        {
+            dbConnect.SetBudget();
+        }
     }
 }

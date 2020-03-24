@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows;
 
 //TODO: Change "Ausgaben" to "Expenses"
-//TODO: Budget set dialogue
 
 
 namespace subget_manager
@@ -17,14 +16,17 @@ namespace subget_manager
     {
         public static StringBuilder ConnectionString;
         static SqlConnection dbConnection;
+        public static float BudgetValue;
 
         static dbConnect()
         {
             ConnectionString = new StringBuilder();
-
-            
         }
-
+        /// <summary>
+        /// Connects to a database server.
+        /// </summary>
+        /// <param name="exist"></param>
+        /// <param name="newDbName"></param>
         public static async void Connect(bool exist, string? newDbName)
         {
             //Retrive ConnectionString from App.config.
@@ -74,6 +76,7 @@ namespace subget_manager
         /// </summary>
         static void InitializeDataGrid(SqlConnection dbConnection)
         {
+            //Reset the Datagrid Source and Refresh
             MainWindow.DataGrid.ItemsSource = null;
             MainWindow.DataGrid.Items.Refresh();
             // The SQL command to be launched.
@@ -93,18 +96,21 @@ namespace subget_manager
 
           
             //Object temp = null;
-
+            //Set the Strings for Budget, Expenses and Rest
             string budgetComString = String.Format("SELECT [Ausgaben] FROM [{0}].[dbo].[SubGet] WHERE [Id] = 0", dbConnection.Database);
             string expenseLabelString = String.Format("SELECT SUM([Ausgaben]) FROM [{0}].[dbo].[SubGet] WHERE [Id] > 0", dbConnection.Database);
             float  restBudget = 0f;
 
+            //Execute SQL commands to retrieve values for Budget
             using (SqlCommand command = new SqlCommand(budgetComString, dbConnection))
             {
                 Object temp = command.ExecuteScalar();
-                MainWindow.BudgetLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", Convert.ToSingle(temp?.ToString()));
+                BudgetValue = Convert.ToSingle(temp?.ToString());
+                MainWindow.BudgetLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", BudgetValue);
                 restBudget = Convert.ToSingle(temp?.ToString());
             }
 
+            //Execute SQL commands to retrieve values for Expenses and Rest
             using (SqlCommand command = new SqlCommand(expenseLabelString, dbConnection))
             {
                 Object temp = command.ExecuteScalar();
@@ -119,10 +125,13 @@ namespace subget_manager
             }
 
 
-
+            //Set Rest
             MainWindow.RestLabel.Content = String.Format(new System.Globalization.CultureInfo(ConfigurationManager.AppSettings["CultureString"]), "{0:C}", restBudget);
         }
-
+        /// <summary>
+        /// Removes selected Value from the Database and reloads the Datagrid.
+        /// </summary>
+        /// <param name="selectedItem"></param>
         public static async void Remove(string selectedItem)
         {
             string removeCommand = String.Format("DELETE FROM [{0}].[dbo].[SubGet] WHERE [Name]='{1}'", dbConnection.Database, selectedItem);
@@ -132,7 +141,10 @@ namespace subget_manager
             }
             InitializeDataGrid(dbConnection);
         }
-
+        /// <summary>
+        /// Creates a database with a given name and sets the Budget value.
+        /// </summary>
+        /// <param name="newDbName"></param>
         public static async void CreateDB(string newDbName)
         {
             // TODO: MAKE CODE CLEANER!!!!!!!
@@ -145,14 +157,22 @@ namespace subget_manager
                 try
                 {
                     await command.ExecuteNonQueryAsync();
+
                     //TODO: ask for start budget
+                    SetBudget setBudget = new SetBudget(firstSet: true);
+                    setBudget.ShowDialog();
+
                     
                     string tableCreate = String.Format(@"CREATE TABLE [{0}].[dbo].[SubGet]
                                                 (
                                                     [Id] INT NOT NULL IDENTITY(0,1) PRIMARY KEY, 
-                                                    [Name] NCHAR(10) NOT NULL,
+                                                    [Name] NVARCHAR(50) NOT NULL,
                                                     [Ausgaben] SMALLMONEY NOT NULL
-                                                 )", newDbName);
+
+                                                   
+                                                 )
+
+                                                 INSERT INTO [{0}].[dbo].[Subget] (Name, Ausgaben) VALUES('Budget', {1})", newDbName, BudgetValue);
                     using (SqlCommand command2 = new SqlCommand(tableCreate, dbConnection))
                     {
                         try
@@ -188,8 +208,11 @@ namespace subget_manager
             //  dbConnection = new SqlConnection(ConnectionString.ToString());
             // 
         }
-
-
+        /// <summary>
+        /// Adds a value to the database.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="amount"></param>
         public static async void Add(string name, float amount)
         {
             if (dbConnection != null && dbConnection.State != ConnectionState.Closed)
@@ -207,15 +230,46 @@ namespace subget_manager
 
             }
         }
+        /// <summary>
+        /// Set the budget to an existing database.
+        /// </summary>
+        public static async void SetBudget()
+        {
+            
 
+            if (dbConnection != null && dbConnection.State != ConnectionState.Closed)
+            {
 
+                SetBudget setBudget = new SetBudget(firstSet: false);
+                setBudget.ShowDialog();
 
+                string commandString = String.Format(@"UPDATE [{0}].[dbo].[SubGet]
+                                                    SET Ausgaben = {1}
+                                                    WHERE Id = 0", dbConnection.Database, BudgetValue);
+                using (SqlCommand command = new SqlCommand(commandString, dbConnection))
+                {
+                    await command.ExecuteNonQueryAsync();
+                }
+                InitializeDataGrid(dbConnection);
+
+            }
+            else
+            {
+                MessageBox.Show("A connection hasn't been established, connect to a database first and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+        /// <summary>
+        /// Closes the connection and clears the DataGrid.
+        /// </summary>
         public static void Close()
         {
             MainWindow.DataGrid.ItemsSource = null;
             MainWindow.DataGrid.Items.Clear();
             MainWindow.DataGrid.Items.Refresh();
             MainWindow.BudgetLabel.Content = null;
+            MainWindow.ExpenseLabel.Content = null;
+            MainWindow.RestLabel.Content = null;
 
 
         }

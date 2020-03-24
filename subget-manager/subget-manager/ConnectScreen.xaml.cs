@@ -39,6 +39,7 @@ namespace subget_manager
             //dbConnect dataConnection = new dbConnect();
             //   dataConnection.ConnectionString = "Server=" + srvTxtBox.Text + ";" + "Database=" + dbTxtBox.Text + ";" + "Trusted_Connection=" + trustedComboBox.SelectedItem + ";";
 
+            // When checked, the connection string to be used will be appended.
             if (conStrBox.IsChecked == false)
             {
                 if (!String.IsNullOrWhiteSpace(srvTxtBox.Text))
@@ -88,6 +89,11 @@ namespace subget_manager
             this.Close();
         }
 
+        /// <summary>
+        /// Enables the Checkboxes if the user's entry should be used.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void conStrBox_Checked(object sender, RoutedEventArgs e)
         {
 
@@ -101,6 +107,11 @@ namespace subget_manager
 
         }
 
+        /// <summary>
+        /// Disables the textboxes if the ConnectionString should be used.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void conStrBox_Unchecked(object sender, RoutedEventArgs e)
         {
 
