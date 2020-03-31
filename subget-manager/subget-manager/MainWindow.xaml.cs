@@ -144,5 +144,17 @@ namespace subget_manager
         {
             dbConnect.SetBudget();
         }
+
+        /// <summary>
+        /// Opens window for showing information related to the double clicked item.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DataGridRow row = sender as DataGridRow;
+            // Some operations with this row
+            MessageBox.Show("Test");
+        }
     }
 }

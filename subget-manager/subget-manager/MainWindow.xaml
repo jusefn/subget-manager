@@ -32,9 +32,14 @@
         </Menu>
         
         <DataGrid x:Name="dataGrid" Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="false" IsReadOnly="true" CanUserResizeColumns="False" CanUserResizeRows="False">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="_Name" x:Name="nameGrid" Width="*" Binding="{Binding Name}"></DataGridTextColumn>
-                <DataGridTextColumn  Header="_Ausgaben" x:Name="expensesGrid" Binding="{Binding Ausgaben, ConverterCulture={StaticResource ResourceKey=cultureSet},  StringFormat={}{0:C}}" ></DataGridTextColumn>
+                <DataGridTextColumn  Header="_Expenses" x:Name="expensesGrid" Binding="{Binding Expenses, ConverterCulture={StaticResource ResourceKey=cultureSet},  StringFormat={}{0:C}}" ></DataGridTextColumn>
             </DataGrid.Columns>
             
         </DataGrid>

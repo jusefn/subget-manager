@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Windows;
 
-//TODO: Change "Ausgaben" to "Expenses"
+//TODO: Change "Expenses" to "Expenses"
 
 
 namespace subget_manager
@@ -80,7 +80,7 @@ namespace subget_manager
             MainWindow.DataGrid.ItemsSource = null;
             MainWindow.DataGrid.Items.Refresh();
             // The SQL command to be launched.
-            string commandString = String.Format("SELECT [Name], [Ausgaben] FROM [{0}].[dbo].[SubGet] WHERE [Id] >= 1", dbConnection.Database);
+            string commandString = String.Format("SELECT [Name], [Expenses] FROM [{0}].[dbo].[SubGet] WHERE [Id] >= 1", dbConnection.Database);
 
             using (SqlCommand command = new SqlCommand(commandString, dbConnection))
             {
@@ -97,8 +97,8 @@ namespace subget_manager
           
             //Object temp = null;
             //Set the Strings for Budget, Expenses and Rest
-            string budgetComString = String.Format("SELECT [Ausgaben] FROM [{0}].[dbo].[SubGet] WHERE [Id] = 0", dbConnection.Database);
-            string expenseLabelString = String.Format("SELECT SUM([Ausgaben]) FROM [{0}].[dbo].[SubGet] WHERE [Id] > 0", dbConnection.Database);
+            string budgetComString = String.Format("SELECT [Expenses] FROM [{0}].[dbo].[SubGet] WHERE [Id] = 0", dbConnection.Database);
+            string expenseLabelString = String.Format("SELECT SUM([Expenses]) FROM [{0}].[dbo].[SubGet] WHERE [Id] > 0", dbConnection.Database);
             float  restBudget = 0f;
 
             //Execute SQL commands to retrieve values for Budget
@@ -167,12 +167,12 @@ namespace subget_manager
                                                 (
                                                     [Id] INT NOT NULL IDENTITY(0,1) PRIMARY KEY, 
                                                     [Name] NVARCHAR(50) NOT NULL,
-                                                    [Ausgaben] SMALLMONEY NOT NULL
+                                                    [Expenses] SMALLMONEY NOT NULL
 
                                                    
                                                  )
 
-                                                 INSERT INTO [{0}].[dbo].[Subget] (Name, Ausgaben) VALUES('Budget', {1})", newDbName, BudgetValue);
+                                                 INSERT INTO [{0}].[dbo].[Subget] (Name, Expenses) VALUES('Budget', {1})", newDbName, BudgetValue);
                     using (SqlCommand command2 = new SqlCommand(tableCreate, dbConnection))
                     {
                         try
@@ -217,7 +217,7 @@ namespace subget_manager
         {
             if (dbConnection != null && dbConnection.State != ConnectionState.Closed)
             {
-                string commandString = String.Format(@"INSERT INTO [{0}].[dbo].[Subget] (Name, Ausgaben) VALUES('{1}', {2})", dbConnection.Database, name, amount);
+                string commandString = String.Format(@"INSERT INTO [{0}].[dbo].[Subget] (Name, Expenses) VALUES('{1}', {2})", dbConnection.Database, name, amount);
                 using (SqlCommand command = new SqlCommand(commandString, dbConnection))
                 {
                     await command.ExecuteNonQueryAsync();
@@ -244,7 +244,7 @@ namespace subget_manager
                 setBudget.ShowDialog();
 
                 string commandString = String.Format(@"UPDATE [{0}].[dbo].[SubGet]
-                                                    SET Ausgaben = {1}
+                                                    SET Expenses = {1}
                                                     WHERE Id = 0", dbConnection.Database, BudgetValue);
                 using (SqlCommand command = new SqlCommand(commandString, dbConnection))
                 {
