@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 
 //TODO: Change "Expenses" to "Expenses"
 
@@ -259,6 +260,29 @@ namespace subget_manager
 
             }
         }
+
+        public static async void UpdateValue(string itemName, float itemValue)
+        {
+
+            if (dbConnection != null && dbConnection.State != ConnectionState.Closed)
+            {
+
+                string commandString = String.Format(@"UPDATE [{0}].[dbo].[SubGet]
+                                                    SET Expenses = {1}
+                                                    WHERE Name = '{2}'", dbConnection.Database, itemValue, itemName);
+                using (SqlCommand command = new SqlCommand(commandString, dbConnection))
+                {
+                    await command.ExecuteNonQueryAsync();
+                }
+                InitializeDataGrid(dbConnection);
+
+            }
+            else
+            {
+                MessageBox.Show("A connection hasn't been established, connect to a database first and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
         /// <summary>
         /// Closes the connection and clears the DataGrid.
         /// </summary>
@@ -271,6 +295,13 @@ namespace subget_manager
             MainWindow.ExpenseLabel.Content = null;
             MainWindow.RestLabel.Content = null;
 
+
+        }
+
+        public static void ItemWindowFunction(Object row)
+        {
+            ItemWindow itemWindow = new ItemWindow(row);
+            itemWindow.ShowDialog();
 
         }
     }

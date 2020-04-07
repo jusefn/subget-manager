@@ -154,7 +154,9 @@ namespace subget_manager
         {
             DataGridRow row = sender as DataGridRow;
             // Some operations with this row
-            MessageBox.Show("Test");
+            //MessageBox.Show("Test");
+            Object[] selectedItem = ((DataRowView)dataGrid.SelectedItem).Row.ItemArray;
+            dbConnect.ItemWindowFunction(selectedItem);
         }
     }
 }

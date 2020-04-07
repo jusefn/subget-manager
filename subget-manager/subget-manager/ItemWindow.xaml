@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:subget_manager"
         mc:Ignorable="d"
-        Title="ItemWindow" Height="170" Width="360">
+        Title="ItemWindow" Height="184" Width="360" Padding="10">
     <StackPanel>
         <Label Content="Name goes here" x:Name="infoName" HorizontalAlignment="Center"/>
-        <Label Content="Link to website goes here" x:Name="infoURL" HorizontalAlignment="Center"/>
+        <Label x:Name="infoURL" HorizontalAlignment="Center">
+            <Hyperlink x:Name="hyperLink" RequestNavigate="Hyperlink_RequestNavigate" >
+                Click here for the billing management
+            </Hyperlink>
+        </Label>
         <Label Content="Change Amount" HorizontalAlignment="Center"/>
         <TextBox x:Name="budgetTxTBox" Text="" Margin="4"/>
 
