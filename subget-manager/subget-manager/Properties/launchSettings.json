@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "subget-manager": {
+      "commandName": "Project"
+    }
+  }
+}

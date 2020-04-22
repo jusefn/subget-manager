@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:subget_manager"
         mc:Ignorable="d"
-        Title="ItemWindow" Height="184" Width="360" Padding="10">
+        Title="About" Height="184" Width="360" Padding="10">
     <StackPanel>
         <Label Content="Name goes here" x:Name="infoName" HorizontalAlignment="Center"/>
         <Label x:Name="infoURL" HorizontalAlignment="Center">
